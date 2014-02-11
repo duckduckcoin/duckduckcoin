@@ -1,0 +1,9 @@
+Building Duckduckcoin
+
+See doc/readme-qt.rst for instructions on building Duckduckcoin-Qt,
+the intended-for-end-users, nice-graphical-interface, reference
+implementation of Duckduckcoin.
+
+See doc/build-*.txt for instructions on building duckduckcoind,
+the intended-for-services, no-graphical-interface, reference
+implementation of Duckduckcoin.
