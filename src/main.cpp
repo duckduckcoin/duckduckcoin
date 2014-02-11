@@ -357,7 +357,8 @@ unsigned int LimitOrphanTxSize(unsigned int nMaxOrphans)
 
 bool CTxOut::IsDust() const
 {
-    // "Dust" is defined in terms of CTransaction::nMinRelayTxFee,
+    return false;
+	// "Dust" is defined in terms of CTransaction::nMinRelayTxFee,
     // which has units satoshis-per-kilobyte.
     // If you'd pay more than 1/3 in fees
     // to spend something, then we consider it dust.
