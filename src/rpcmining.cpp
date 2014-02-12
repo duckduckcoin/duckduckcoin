@@ -10,6 +10,38 @@
 
 using namespace json_spirit;
 using namespace std;
+uint64_t GetNetworkHashPS( int lookup )
+ //
+ //    WM - Function to estimate network hash rate.  Mostly lifted from
+ //    Litecoin and modified for Duck Duck Coin.
+ //
+ //    Parameters: lookup (int) - How many blocks to look into the past.
+ //    Returns: Estimated Duck Duck Coin network hash rate (uint64_t)
+ //
+ 
+ uint64_t GetNetworkHashPS( int lookup )
+ {
+     if( !pindexBest )
+         return 0;
+         
+     if( lookup < 0 )
+         lookup = 0;
+     
+     // If lookup is larger than chain, then set it to chain length.
+     if( lookup > pindexBest->nHeight )
+         lookup = pindexBest->nHeight;
+         
+     CBlockIndex *pindexPrev = pindexBest;
+     
+     for( int i = 0; i < lookup; ++i )
+         pindexPrev = pindexPrev->pprev;
+         
+     double timeDiff = pindexBest->GetBlockTime() - pindexPrev->GetBlockTime();
+     double timePerBlock = timeDiff / lookup;
+     
+     return (uint64_t)(((double)GetDifficulty() * pow(2.0, 32)) / timePerBlock);
+ }
+ 
 
 Value getgenerate(const Array& params, bool fHelp)
 {
