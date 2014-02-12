@@ -7,7 +7,7 @@ QT += network
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE STATIC
 CONFIG += no_include_pwd
 CONFIG += thread
-CONFIG += static static-libgcc
+win32:CONFIG += static static-libgcc
 
 # for boost 1.37, add -mt to the boost libraries
 # use: qmake BOOST_LIB_SUFFIX=-mt
@@ -23,19 +23,21 @@ CONFIG += static static-libgcc
 # Custom dependencies paths
 # Edit to your environment
 #
+win32:{
+DEPS_BASE=D:/Workspace/coinbuild/deps-master
 BOOST_LIB_SUFFIX=-mgw46-mt-sd-1_53
-BOOST_INCLUDE_PATH=coinsys/depends/boost
-BOOST_LIB_PATH=coinsys/depends/boost/stage/lib
-BDB_INCLUDE_PATH=coinsys/depends/db/build_windows
-BDB_LIB_PATH=coinsys/depends/db/build_unix/.libs
+BOOST_INCLUDE_PATH=$$DEPS_BASE/boost
+BOOST_LIB_PATH=$$DEPS_BASE/boost/stage/lib
+BDB_INCLUDE_PATH=$$DEPS_BASE/db/build_windows
+BDB_LIB_PATH=$$DEPS_BASE/db/build_unix/.libs
 BDB_LIB_SUFFIX=-4.8
-OPENSSL_INCLUDE_PATH=coinsys/depends/ssl/include
-OPENSSL_LIB_PATH=coinsys/depends/ssl
-MINIUPNPC_INCLUDE_PATH=coinsys/depends/miniupnpc/include
-MINIUPNPC_LIB_PATH=coinsys/depends/miniupnpc
-QRCODE_INCLUDE_PATH=coinsys/depends/qrcode-win32-3.1.1/include
-QRCODE_LIB_PATH=coinsys/depends/qrcode-win32-3.1.1/dll
-
+OPENSSL_INCLUDE_PATH=$$DEPS_BASE/ssl/include
+OPENSSL_LIB_PATH=$$DEPS_BASE/ssl
+MINIUPNPC_INCLUDE_PATH=$$DEPS_BASE/miniupnpc/include
+MINIUPNPC_LIB_PATH=$$DEPS_BASE/miniupnpc
+QRCODE_INCLUDE_PATH=$$DEPS_BASE/qrcode-win32-3.1.1/include
+QRCODE_LIB_PATH=$$DEPS_BASE/qrcode-win32-3.1.1/dll
+}
 OBJECTS_DIR = build
 MOC_DIR = build
 UI_DIR = build
@@ -74,7 +76,8 @@ contains(USE_QRCODE, 1) {
     message(Building with QRCode support)
     DEFINES += USE_QRCODE
         INCLUDEPATH +=$$QRCODE_INCLUDE_PATH
-        LIBS += $$join(QRCODE_LIB_PATH,,-L) -lqrcodelib
+        win32:LIBS += $$join(QRCODE_LIB_PATH,,-L) -lqrcodelib
+		!win32:LIBS += $$join(QRCODE_LIB_PATH,,-L) -lqrencode
 }
 
 # use: qmake "USE_UPNP=1" ( enabled by default; default)
@@ -122,14 +125,13 @@ INCLUDEPATH += src/leveldb/include src/leveldb/helpers
 LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
 !win32 {
     # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
-    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
-#} else {
+    LIBS += -lshlwapi
+    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=NATIVE_WINDOWS $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
+} else {
     # make an educated guess about what the ranlib command is called
     isEmpty(QMAKE_RANLIB) {
         QMAKE_RANLIB = $$replace(QMAKE_STRIP, strip, ranlib)
     }
-#    LIBS += -lshlwapi
-#    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=NATIVE_WINDOWS $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
 }
 genleveldb.target = $$PWD/src/leveldb/libleveldb.a
 genleveldb.depends = FORCE
@@ -437,14 +439,14 @@ LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -l
 win32:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
 macx:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
 
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../coinsys/depends/qrcode-win32-3.1.1/lib/ -lqrcodelib
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../coinsys/depends/qrcode-win32-3.1.1/lib/ -lqrcodelibd
+win32:CONFIG(release, debug|release): LIBS += -L$$DEPS_BASE/qrcode-win32-3.1.1/lib/ -lqrcodelib
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$DEPS_BASE/qrcode-win32-3.1.1/lib/ -lqrcodelibd
 
-win32:INCLUDEPATH += $$PWD/../../../../coinsys/depends/qrcode-win32-3.1.1/include
-win32:DEPENDPATH += $$PWD/../../../../coinsys/depends/qrcode-win32-3.1.1/include
+win32:INCLUDEPATH += $$DEPS_BASE/qrcode-win32-3.1.1/include
+win32:DEPENDPATH += $$DEPS_BASE/qrcode-win32-3.1.1/include
 
-win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$PWD/../../../../coinsys/depends/qrcode-win32-3.1.1/lib/qrcodelib.lib
-else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$PWD/../../../../coinsys/depends/qrcode-win32-3.1.1/lib/qrcodelibd.lib
+win32:CONFIG(release, debug|release): PRE_TARGETDEPS += $$DEPS_BASE/qrcode-win32-3.1.1/lib/qrcodelib.lib
+else:win32:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$DEPS_BASE/qrcode-win32-3.1.1/lib/qrcodelibd.lib
 ####
 
 #win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../../../MinGW/bin/libgcc_s_dw2-1.dll
