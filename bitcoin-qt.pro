@@ -127,7 +127,7 @@ LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
     # make an educated guess about what the ranlib command is called
     isEmpty(QMAKE_RANLIB) {
         QMAKE_RANLIB = $$replace(QMAKE_STRIP, strip, ranlib)
-#    }
+    }
 #    LIBS += -lshlwapi
 #    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=NATIVE_WINDOWS $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
 }
