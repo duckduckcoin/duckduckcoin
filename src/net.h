@@ -25,6 +25,7 @@
 class CNode;
 class CBlockIndex;
 extern int nBestHeight;
+extern unsigned int nBestHeightTime;
 
 
 

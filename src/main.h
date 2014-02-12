@@ -81,6 +81,7 @@ extern std::set<CBlockIndex*, CBlockIndexWorkComparator> setBlockIndexValid;
 extern uint256 hashGenesisBlock;
 extern CBlockIndex* pindexGenesisBlock;
 extern int nBestHeight;
+extern unsigned int nBestHeightTime;
 extern uint256 nBestChainWork;
 extern uint256 nBestInvalidWork;
 extern uint256 hashBestChain;

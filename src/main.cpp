@@ -37,6 +37,7 @@ uint256 hashGenesisScrypt("0x12a765e31ffd4059bada1e25190f6e98c99d9714d334efa41a1
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20);
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
+unsigned int nBestHeightTime = 0;
 uint256 nBestChainWork = 0;
 uint256 nBestInvalidWork = 0;
 uint256 hashBestChain = 0;
@@ -2000,6 +2001,7 @@ bool SetBestChain(CValidationState &state, CBlockIndex* pindexNew)
     pindexBest = pindexNew;
     pblockindexFBBHLast = NULL;
     nBestHeight = pindexBest->nHeight;
+    nBestHeightTime = pindexBest->GetBlockTime();   // Record timestamp of new best block.
     nBestChainWork = pindexNew->nChainWork;
     nTimeBestReceived = GetTime();
     nTransactionsUpdated++;

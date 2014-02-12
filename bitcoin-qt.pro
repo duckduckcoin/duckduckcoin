@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = duckduckcoin-qt
 macx:TARGET = "Duckduckcoin-Qt"
-VERSION = 0.8.6
+VERSION = 0.8.6.2
 INCLUDEPATH += src src/json src/qt 
 QT += network
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE STATIC
@@ -23,18 +23,18 @@ CONFIG += static static-libgcc
 # Custom dependencies paths
 # Edit to your environment
 #
-#BOOST_LIB_SUFFIX=-mgw46-mt-sd-1_53
-#BOOST_INCLUDE_PATH=H:/coinsys/depends/boost
-#BOOST_LIB_PATH=H:/coinsys/depends/boost/stage/lib
-#BDB_INCLUDE_PATH=H:/coinsys/depends/db/build_windows
-#BDB_LIB_PATH=H:/coinsys/depends/db/build_unix/.libs
-#BDB_LIB_SUFFIX=-4.8
-#OPENSSL_INCLUDE_PATH=H:/coinsys/depends/ssl/include
-#OPENSSL_LIB_PATH=H:/coinsys/depends/ssl
-#MINIUPNPC_INCLUDE_PATH=H:/coinsys/depends/miniupnpc
-#MINIUPNPC_LIB_PATH=H:/coinsys/depends/miniupnpc
-#QRCODE_INCLUDE_PATH=H:/coinsys/depends/qrcode-win32-3.1.1/include
-#QRCODE_LIB_PATH=:/workspace/coinsys/depends/qrcode-win32-3.1.1/dll
+BOOST_LIB_SUFFIX=-mgw46-mt-sd-1_53
+BOOST_INCLUDE_PATH=coinsys/depends/boost
+BOOST_LIB_PATH=coinsys/depends/boost/stage/lib
+BDB_INCLUDE_PATH=coinsys/depends/db/build_windows
+BDB_LIB_PATH=coinsys/depends/db/build_unix/.libs
+BDB_LIB_SUFFIX=-4.8
+OPENSSL_INCLUDE_PATH=coinsys/depends/ssl/include
+OPENSSL_LIB_PATH=coinsys/depends/ssl
+MINIUPNPC_INCLUDE_PATH=coinsys/depends/miniupnpc/include
+MINIUPNPC_LIB_PATH=coinsys/depends/miniupnpc
+QRCODE_INCLUDE_PATH=coinsys/depends/qrcode-win32-3.1.1/include
+QRCODE_LIB_PATH=coinsys/depends/qrcode-win32-3.1.1/dll
 
 OBJECTS_DIR = build
 MOC_DIR = build
@@ -122,14 +122,14 @@ INCLUDEPATH += src/leveldb/include src/leveldb/helpers
 LIBS += $$PWD/src/leveldb/libleveldb.a $$PWD/src/leveldb/libmemenv.a
 !win32 {
     # we use QMAKE_CXXFLAGS_RELEASE even without RELEASE=1 because we use RELEASE to indicate linking preferences not -O preferences
-    #genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
+    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a
 #} else {
     # make an educated guess about what the ranlib command is called
-#    isEmpty(QMAKE_RANLIB) {
-#        QMAKE_RANLIB = $$replace(QMAKE_STRIP, strip, ranlib)
+    isEmpty(QMAKE_RANLIB) {
+        QMAKE_RANLIB = $$replace(QMAKE_STRIP, strip, ranlib)
 #    }
-    LIBS += -lshlwapi
-    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=OS_WINDOWS_CROSSCOMPILE $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
+#    LIBS += -lshlwapi
+#    genleveldb.commands = cd $$PWD/src/leveldb && CC=$$QMAKE_CC CXX=$$QMAKE_CXX TARGET_OS=NATIVE_WINDOWS $(MAKE) OPT=\"$$QMAKE_CXXFLAGS $$QMAKE_CXXFLAGS_RELEASE\" libleveldb.a libmemenv.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libleveldb.a && $$QMAKE_RANLIB $$PWD/src/leveldb/libmemenv.a
 }
 genleveldb.target = $$PWD/src/leveldb/libleveldb.a
 genleveldb.depends = FORCE
