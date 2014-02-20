@@ -2,8 +2,8 @@ TEMPLATE = app
 TARGET = duckduckcoin-qt
 macx:TARGET = "Duckduckcoin-Qt"
 VERSION = 0.8.6.2
-INCLUDEPATH += src src/json src/qt 
-QT += network
+INCLUDEPATH += src src/json src/qt
+QT += widgets network
 
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE STATIC
 
@@ -193,8 +193,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/qt/addresstablemodel.h \
     src/qt/optionsdialog.h \
     src/qt/sendcoinsdialog.h \
-
-
     src/qt/addressbookpage.h \
     src/qt/signverifymessagedialog.h \
     src/qt/aboutdialog.h \
@@ -205,7 +203,6 @@ HEADERS += src/qt/bitcoingui.h \
     src/base58.h \
     src/bignum.h \
     src/checkpoints.h \
-
     src/compat.h \
     src/sync.h \
     src/util.h \
@@ -281,8 +278,6 @@ SOURCES += src/qt/bitcoin.cpp \
     src/qt/addresstablemodel.cpp \
     src/qt/optionsdialog.cpp \
     src/qt/sendcoinsdialog.cpp \
-
-
     src/qt/addressbookpage.cpp \
     src/qt/signverifymessagedialog.cpp \
     src/qt/aboutdialog.cpp \
@@ -350,7 +345,6 @@ SOURCES += src/qt/bitcoin.cpp \
 RESOURCES += src/qt/bitcoin.qrc
 
 FORMS += src/qt/forms/sendcoinsdialog.ui \
-
     src/qt/forms/addressbookpage.ui \
     src/qt/forms/signverifymessagedialog.ui \
     src/qt/forms/aboutdialog.ui \
