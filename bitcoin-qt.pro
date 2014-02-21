@@ -3,7 +3,7 @@ TARGET = duckduckcoin-qt
 macx:TARGET = "Duckduckcoin-Qt"
 VERSION = 0.8.6.2
 INCLUDEPATH += src src/json src/qt
-QT += widgets network
+QT += widgets gui network
 
 DEFINES += QT_GUI BOOST_THREAD_USE_LIB BOOST_SPIRIT_THREADSAFE STATIC
 
@@ -134,8 +134,8 @@ macx: {
         BDB_INCLUDE_PATH = $$DEPSDIR/include
     }
 
-    HEADERS += src/qt/macdockiconhandler.h src/qt/macnotificationhandler.h
-    OBJECTIVE_SOURCES += src/qt/macdockiconhandler.mm src/qt/macnotificationhandler.mm
+#    HEADERS += src/qt/macdockiconhandler.h src/qt/macnotificationhandler.h
+#    OBJECTIVE_SOURCES += src/qt/macdockiconhandler.mm src/qt/macnotificationhandler.mm
     LIBS += -framework Foundation -framework ApplicationServices -framework AppKit -framework CoreServices \
         $$BDB_LIB_PATH/libdb_cxx.a \
         $$BOOST_LIB_PATH/libboost_system-mt.a \
@@ -149,8 +149,8 @@ macx: {
     # osx 10.9 has changed the stdlib default to libc++. To prevent some link error, you may need to use libstdc++
     QMAKE_CXXFLAGS += -stdlib=libstdc++
 
-    QMAKE_CFLAGS_THREAD += -pthread
-    QMAKE_CXXFLAGS_THREAD += -pthread
+    # QMAKE_CFLAGS_THREAD += -pthread
+    # QMAKE_CXXFLAGS_THREAD += -pthread
 }
 
 INCLUDEPATH += src/leveldb/include src/leveldb/helpers
@@ -446,14 +446,14 @@ win32:!contains(MINGW_THREAD_BUGFIX, 0) {
     DEFINES += _FILE_OFFSET_BITS=64
 }
 
-macx:HEADERS += src/qt/macdockiconhandler.h
-macx:OBJECTIVE_SOURCES += src/qt/macdockiconhandler.mm
+# macx:HEADERS += src/qt/macdockiconhandler.h
+# macx:OBJECTIVE_SOURCES += src/qt/macdockiconhandler.mm
 macx:LIBS += -framework Foundation -framework ApplicationServices -framework AppKit
 macx:DEFINES += MAC_OSX MSG_NOSIGNAL=0
 macx:ICON = src/qt/res/icons/bitcoin.icns
-macx:QMAKE_CFLAGS_THREAD += -pthread
-macx:QMAKE_LFLAGS_THREAD += -pthread
-macx:QMAKE_CXXFLAGS_THREAD += -pthread
+# macx:QMAKE_CFLAGS_THREAD += -pthread
+# macx:QMAKE_LFLAGS_THREAD += -pthread
+# macx:QMAKE_CXXFLAGS_THREAD += -pthread
 macx:QMAKE_INFO_PLIST = share/qt/Info.plist
 
 # Set libraries and includes at end, to use platform-defined defaults if not overridden
@@ -466,9 +466,10 @@ LIBS += -lssl -lcrypto -ldb_cxx$$BDB_LIB_SUFFIX
 
 
 win32:LIBS += -lws2_32 -lshlwapi -lmswsock -lole32 -loleaut32 -luuid -lgdi32
-LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
+!macx {
+    LIBS += -lboost_system$$BOOST_LIB_SUFFIX -lboost_filesystem$$BOOST_LIB_SUFFIX -lboost_program_options$$BOOST_LIB_SUFFIX -lboost_thread$$BOOST_THREAD_LIB_SUFFIX
+}
 win32:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
-macx:LIBS += -lboost_chrono$$BOOST_LIB_SUFFIX
 
 win32:CONFIG(release, debug|release): LIBS += -L$$DEPS_BASE/qrcode-win32-3.1.1/lib/ -lqrcodelib
 

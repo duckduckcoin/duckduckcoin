@@ -151,7 +151,7 @@ BitcoinGUI::~BitcoinGUI()
     saveWindowGeometry();
     if(trayIcon) // Hide tray icon, as deleting will let it linger until quit (on Ubuntu)
         trayIcon->hide();
-#ifdef Q_OS_MAC
+#ifdef __Q_OS_MAC
     delete appMenuBar;
     MacDockIconHandler::instance()->setMainWindow(NULL);
 #endif
@@ -304,7 +304,7 @@ void BitcoinGUI::setClientModel(ClientModel *clientModel)
         if(clientModel->isTestNet())
         {
             setWindowTitle(windowTitle() + QString(" ") + tr("[testnet]"));
-#ifndef Q_OS_MAC
+#ifndef __Q_OS_MAC
             QApplication::setWindowIcon(QIcon(":icons/duckduckcoin_testnet"));
             setWindowIcon(QIcon(":icons/duckduckcoin_testnet"));
 #else
@@ -371,7 +371,7 @@ void BitcoinGUI::createTrayIcon()
 void BitcoinGUI::createTrayIconMenu()
 {
     QMenu *trayIconMenu;
-#ifndef Q_OS_MAC
+#ifndef __Q_OS_MAC
     // return if trayIcon is unset (only on non-Mac OSes)
     if (!trayIcon)
         return;
