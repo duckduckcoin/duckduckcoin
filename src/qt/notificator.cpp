@@ -225,7 +225,7 @@ void Notificator::notifySystray(Class cls, const QString &title, const QString &
 }
 
 // Based on Qt's tray icon implementation
-#ifdef Q_OS_MAC
+#ifdef __Q_OS_MAC
 void Notificator::notifyGrowl(Class cls, const QString &title, const QString &text, const QIcon &icon)
 {
     const QString script(
@@ -285,7 +285,7 @@ void Notificator::notify(Class cls, const QString &title, const QString &text, c
     case QSystemTray:
         notifySystray(cls, title, text, icon, millisTimeout);
         break;
-#ifdef Q_OS_MAC
+#ifdef __Q_OS_MAC
     case Growl12:
     case Growl13:
         notifyGrowl(cls, title, text, icon);

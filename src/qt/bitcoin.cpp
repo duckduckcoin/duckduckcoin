@@ -22,8 +22,9 @@
 #include <QTimer>
 #include <QTranslator>
 #include <QLibraryInfo>
+#include <QDir>
 
-#ifdef Q_OS_MAC
+#ifdef __Q_OS_MAC
 #include "macdockiconhandler.h"
 #endif
 
