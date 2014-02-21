@@ -53,6 +53,7 @@
     <qresource prefix="/translations">
         <file alias="bs">locale/bitcoin_bs.ts</file>
         <file alias="ca">locale/bitcoin_ca.ts</file>
+        <file alias="Chinese ">locale/bitcoin_ch.ts</file>
         <file alias="cy">locale/bitcoin_cy.ts</file>
         <file alias="eo">locale/bitcoin_eo.ts</file>
         <file alias="gu_IN">locale/bitcoin_gu_IN.ts</file>
