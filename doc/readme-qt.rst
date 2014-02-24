@@ -72,10 +72,22 @@ Mac OS X
 .. _`MacPorts`: http://www.macports.org/install.php
 .. _`HomeBrew`: http://mxcl.github.io/homebrew/
 
+To build from command line:
+
+::
+
+    qmake
+    make
+    macdeployqt Duckduckcoin-Qt.app
 
 Build configuration options
 ============================
 
+You can also pass the library parameters to qmake rather than patching bitcoin-qt.pro as follows:
+
+::
+
+    qmake DEPSDIR=/opt/local BDB_INCLUDE_PATH=/opt/local/include/db48 BDB_LIB_PATH=/opt/local/lib/db48 BOOST_INCLUDE_PATH=/opt/local/include BOOST_LIB_PATH=/opt/local/lib
 UPnP port forwarding
 ---------------------
 
