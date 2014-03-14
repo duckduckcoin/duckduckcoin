@@ -1765,63 +1765,32 @@ public:
         return true; // return CheckProofOfWork(GetBlockHash(), nBits);
     }
 
-    enum { nMedianTimeSpan1=11 };
-    enum { nMedianTimeSpan2=5 };
+    enum { nMedianTimeSpan=11 };
 
     int64 GetMedianTimePast() const
     {
-		if (nHeight < 50000)
-		{
-			int64 pmedian[nMedianTimeSpan1];
-			int64* pbegin = &pmedian[nMedianTimeSpan1];
-			int64* pend = &pmedian[nMedianTimeSpan1];
+        int64 pmedian[nMedianTimeSpan];
+        int64* pbegin = &pmedian[nMedianTimeSpan];
+        int64* pend = &pmedian[nMedianTimeSpan];
 
-			const CBlockIndex* pindex = this;
-			for (int i = 0; i < nMedianTimeSpan1 && pindex; i++, pindex = pindex->pprev)
-				*(--pbegin) = pindex->GetBlockTime();
+        const CBlockIndex* pindex = this;
+        for (int i = 0; i < nMedianTimeSpan && pindex; i++, pindex = pindex->pprev)
+            *(--pbegin) = pindex->GetBlockTime();
 
-			std::sort(pbegin, pend);
-			return pbegin[(pend - pbegin)/2];
-		}
-		else
-		{
-			int64 pmedian[nMedianTimeSpan2];
-			int64* pbegin = &pmedian[nMedianTimeSpan2];
-			int64* pend = &pmedian[nMedianTimeSpan2];
-
-			const CBlockIndex* pindex = this;
-			for (int i = 0; i < nMedianTimeSpan2 && pindex; i++, pindex = pindex->pprev)
-				*(--pbegin) = pindex->GetBlockTime();
-
-			std::sort(pbegin, pend);
-			return pbegin[(pend - pbegin)/2];
-		}
+        std::sort(pbegin, pend);
+        return pbegin[(pend - pbegin)/2];
     }
 
     int64 GetMedianTime() const
     {
-		if (nHeight < 50000)
-		{
-			const CBlockIndex* pindex = this;
-			for (int i = 0; i < nMedianTimeSpan1/2; i++)
-			{
-				if (!pindex->pnext)
-					return GetBlockTime();
-				pindex = pindex->pnext;
-			}
-			return pindex->GetMedianTimePast();
-		}
-		else
-		{
-			const CBlockIndex* pindex = this;
-			for (int i = 0; i < nMedianTimeSpan2/2; i++)
-			{
-				if (!pindex->pnext)
-					return GetBlockTime();
-				pindex = pindex->pnext;
-			}
-			return pindex->GetMedianTimePast();
-		}
+        const CBlockIndex* pindex = this;
+        for (int i = 0; i < nMedianTimeSpan/2; i++)
+        {
+            if (!pindex->pnext)
+                return GetBlockTime();
+            pindex = pindex->pnext;
+        }
+        return pindex->GetMedianTimePast();
     }
 
     /**
