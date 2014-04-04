@@ -1,7 +1,7 @@
 TEMPLATE = app
 TARGET = duckduckcoin-qt
 macx:TARGET = "Duckduckcoin-Qt"
-VERSION = 0.8.7.0
+VERSION = 0.8.8
 INCLUDEPATH += src src/json src/qt
 QT += widgets gui network
 
